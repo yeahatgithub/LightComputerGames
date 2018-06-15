@@ -2,6 +2,7 @@
 # @Author  : freedomyeah
 # @Email   : iamdouble@163.com
 # @Copyright:  MIT
+import random
 
 HANGMAN_LIST = [
 '''
@@ -69,13 +70,13 @@ def input_guess(guessed_letters):
         else:
             return g
 
-
-
-target_word = "cat"
-print("H A N G M A N")
-hitted_letters = ['_', '_', '_']
+target_words_str = "apple banana berry lemon lichee mango orange pear"
+target_words = target_words_str.split()
+target_word = random.choice(target_words)
+hitted_letters = ['_'] * len(target_word)
 missed_letters = ''
 num_guess_failure = 0
+print("H A N G M A N")
 while num_guess_failure < len(HANGMAN_LIST) - 1:
     print(HANGMAN_LIST[num_guess_failure])
     print("当前空缺：")
@@ -100,6 +101,7 @@ while num_guess_failure < len(HANGMAN_LIST) - 1:
 if num_guess_failure == len(HANGMAN_LIST) - 1:
     print("真不幸，你丢命了！")
     print(HANGMAN_LIST[num_guess_failure])
+    print("被猜的单词是：" + target_word)
 else:
     print("你猜对了！被猜测的单词是：" + target_word)
     print("棒棒哒！")
