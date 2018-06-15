@@ -58,14 +58,15 @@ HANGMAN_LIST = [
 '''
         ]
 
-guess_error = 0
 guessed_letters = ['_', '_', '_']
 missed_letters = ''
-while guess_error < len(HANGMAN_LIST) - 1:
-    print(HANGMAN_LIST[guess_error])
+num_guess_failure = 0
+while num_guess_failure < len(HANGMAN_LIST) - 1:
+    print(HANGMAN_LIST[num_guess_failure])
     print("当前空缺：")
     print(' '.join(guessed_letters))
-    if len(missed_letters) > 0:
+    num_guess_failure = len(missed_letters)
+    if num_guess_failure > 0:
         print("没猜中的字母：" + missed_letters)
     g = input("\n你猜的下一个字母是：")
     hit = False
@@ -77,12 +78,11 @@ while guess_error < len(HANGMAN_LIST) - 1:
         if '_' not in guessed_letters:
             break
     else:
-        guess_error += 1
         missed_letters += g
 
-if guess_error == len(HANGMAN_LIST) - 1:
+if num_guess_failure == len(HANGMAN_LIST) - 1:
     print("真不幸，你丢命了！")
-    print(HANGMAN_LIST[guess_error])
+    print(HANGMAN_LIST[num_guess_failure])
 else:
     print("你猜对了！被猜测的单词是：" + target_word)
     print("棒棒哒！")
