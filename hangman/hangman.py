@@ -104,9 +104,22 @@ def play_set(target_word):
         print("你猜对了！被猜测的单词是：" + target_word)
         print("棒棒哒！")
 
+def continue_to_play():
+    '''继续玩吗？'''
+    print()
+    print("你要继续玩吗？(yes or no)")
+    return input().lower().startswith('y')
+
 target_words_str = "apple banana berry lemon lichee mango orange pear"
 target_words = target_words_str.split()
-target_word = random.choice(target_words)
-play_set(target_word)
+
+start_game = True
+while start_game:
+    target_word = random.choice(target_words)
+    play_set(target_word)
+
+    start_game = continue_to_play()
+
+print("拜拜！")
 
 
