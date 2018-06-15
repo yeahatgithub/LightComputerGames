@@ -70,40 +70,43 @@ def input_guess(guessed_letters):
         else:
             return g
 
+
+def play_set(target_word):
+    hitted_letters = ['_'] * len(target_word)
+    missed_letters = ''
+    num_guess_failure = 0
+    print("H A N G M A N")
+    while num_guess_failure < len(HANGMAN_LIST) - 1:
+        print(HANGMAN_LIST[num_guess_failure])
+        print("当前空缺：")
+        print(' '.join(hitted_letters))
+        num_guess_failure = len(missed_letters)
+        if num_guess_failure > 0:
+            print("没猜中的字母：" + missed_letters)
+
+        guessed_letters = ''.join(hitted_letters) + missed_letters
+        g = input_guess(guessed_letters)
+        hit = False
+        for i in range(len(target_word)):
+            if target_word[i] == g:
+                hitted_letters[i] = g
+                hit = True
+        if hit:
+            if '_' not in hitted_letters:
+                break
+        else:
+            missed_letters += g
+    if num_guess_failure == len(HANGMAN_LIST) - 1:
+        print("真不幸，你丢命了！")
+        print(HANGMAN_LIST[num_guess_failure])
+        print("被猜的单词是：" + target_word)
+    else:
+        print("你猜对了！被猜测的单词是：" + target_word)
+        print("棒棒哒！")
+
 target_words_str = "apple banana berry lemon lichee mango orange pear"
 target_words = target_words_str.split()
 target_word = random.choice(target_words)
-hitted_letters = ['_'] * len(target_word)
-missed_letters = ''
-num_guess_failure = 0
-print("H A N G M A N")
-while num_guess_failure < len(HANGMAN_LIST) - 1:
-    print(HANGMAN_LIST[num_guess_failure])
-    print("当前空缺：")
-    print(' '.join(hitted_letters))
-    num_guess_failure = len(missed_letters)
-    if num_guess_failure > 0:
-        print("没猜中的字母：" + missed_letters)
-
-    guessed_letters = ''.join(hitted_letters) + missed_letters
-    g = input_guess(guessed_letters)
-    hit = False
-    for i in range(len(target_word)):
-        if target_word[i] == g:
-            hitted_letters[i] = g
-            hit = True
-    if hit:
-        if '_' not in hitted_letters:
-            break
-    else:
-        missed_letters += g
-
-if num_guess_failure == len(HANGMAN_LIST) - 1:
-    print("真不幸，你丢命了！")
-    print(HANGMAN_LIST[num_guess_failure])
-    print("被猜的单词是：" + target_word)
-else:
-    print("你猜对了！被猜测的单词是：" + target_word)
-    print("棒棒哒！")
+play_set(target_word)
 
 
