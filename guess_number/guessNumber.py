@@ -4,16 +4,15 @@
 # @Copyright:  MIT
 import random
 
-name = input("你好，你的名字是：")
 number = random.randint(1, 20)
-print("下面," + name + ", 我已经想好了1到20之间的一个数。")
+print("我已经想好了1到20之间的一个数。")
 
 for i in range(6):
-    print("你猜一猜看是什么数。")
+    print("你猜一猜看是什么数：")
     guess = int(input())
 
     if guess == number:
-        print("你猜对了")
+        print("你猜对了。恭喜！")
         break
     elif guess < number:
         print("猜小了")
