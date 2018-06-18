@@ -15,6 +15,12 @@ BOARD_SIZE = 300
 MARGIN_TOP = (WINDOW_HEIGHT - BOARD_SIZE)//2
 MARGIN_LEFT = (WINDOW_WIDTH - BOARD_SIZE) // 2
 
+BLACK_SIDE_X = MARGIN_LEFT
+BLACK_SIDE_Y = MARGIN_TOP - 150
+WHITE_SIDE_X = MARGIN_LEFT + 150
+WHITE_SIDE_Y = MARGIN_TOP - 150
+SELECT_AREA_WIDTH = 130
+SELECT_AREA_HEIGHT = 50
 
 def main():
     pygame.init()
@@ -23,14 +29,35 @@ def main():
     is_playing = True
 
     while is_playing:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                is_playing = False
+        is_playing = check_events()
 
         screen.fill(WHITE)
         draw_board(screen)
         draw_select_side(screen)
         pygame.display.update()
+
+def check_events():
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            return False
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            click_pos = pygame.mouse.get_pos()
+            if select_black_side(click_pos):
+                print("你选择黑棋。")
+
+            if select_white_side(click_pos):
+                print("你选择白棋。")
+
+    return True
+
+def select_black_side(click_pos):
+    return BLACK_SIDE_X <= click_pos[0] <= BLACK_SIDE_X + SELECT_AREA_WIDTH \
+            and BLACK_SIDE_Y <= click_pos[1] <= BLACK_SIDE_Y + SELECT_AREA_HEIGHT
+
+def select_white_side(click_pos):
+    return WHITE_SIDE_X <= click_pos[0] <= WHITE_SIDE_X + SELECT_AREA_WIDTH \
+            and WHITE_SIDE_Y <= click_pos[1] <= WHITE_SIDE_Y + SELECT_AREA_HEIGHT
 
 def draw_board(screen):
     for r in range(1, 3):
@@ -51,8 +78,8 @@ def draw_select_side(screen):
     select_tip_position = (MARGIN_LEFT, MARGIN_TOP - 200)
     screen.blit(select_tip_surface, select_tip_position)
 
-    draw_select_button(screen, MARGIN_LEFT, MARGIN_TOP - 150, '选黑棋(X)')
-    draw_select_button(screen, MARGIN_LEFT + 150, MARGIN_TOP - 150, '选白棋(O)')
+    draw_select_button(screen, BLACK_SIDE_X, BLACK_SIDE_Y, '选黑棋(X)')
+    draw_select_button(screen, WHITE_SIDE_X, WHITE_SIDE_Y, '选白棋(O)')
 
 def draw_select_button(screen, x, y, btn_label):
     side_rect = (x, y, 130, 50)
