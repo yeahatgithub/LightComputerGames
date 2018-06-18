@@ -15,6 +15,8 @@ BOARD_SIZE = 300
 MARGIN_TOP = (WINDOW_HEIGHT - BOARD_SIZE)//2
 MARGIN_LEFT = (WINDOW_WIDTH - BOARD_SIZE) // 2
 
+BLACK_SIDE = 'X'
+WHITE_SIDE = 'O'
 BLACK_SIDE_X = MARGIN_LEFT
 BLACK_SIDE_Y = MARGIN_TOP - 150
 WHITE_SIDE_X = MARGIN_LEFT + 150
@@ -26,30 +28,33 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((800, 800))
     pygame.display.set_caption("三连棋")
-    is_playing = True
+    game_state = GameState()
 
-    while is_playing:
-        is_playing = check_events()
+    while game_state.is_playing:
+        game_state = check_events(game_state)
 
         screen.fill(WHITE)
         draw_board(screen)
-        draw_select_side(screen)
+        if not game_state.after_selecting_side:
+            draw_select_side(screen)
+        else:
+            draw_whose_turn(screen, game_state.player_side)
         pygame.display.update()
 
-def check_events():
+def check_events(game_state):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            return False
+            game_state.stop_game()
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             click_pos = pygame.mouse.get_pos()
             if select_black_side(click_pos):
-                print("你选择黑棋。")
+                game_state.set_player_side(BLACK_SIDE)
 
             if select_white_side(click_pos):
-                print("你选择白棋。")
+                game_state.set_player_side(WHITE_SIDE)
 
-    return True
+    return game_state
 
 def select_black_side(click_pos):
     return BLACK_SIDE_X <= click_pos[0] <= BLACK_SIDE_X + SELECT_AREA_WIDTH \
@@ -89,6 +94,28 @@ def draw_select_button(screen, x, y, btn_label):
     side_surface = side_font.render(btn_label, False, BLACK)
     side_position = (x + 5, y + 10)
     screen.blit(side_surface, side_position)
+
+def draw_whose_turn(screen, player_side):
+    computer_side = WHITE_SIDE if player_side == 'X' else BLACK_SIDE
+    vs_str = "你(" + player_side + ")  VS  电脑(" + computer_side + ")"
+
+    side_font = pygame.font.SysFont('simhei', 28)
+    side_surface = side_font.render(vs_str, False, BLACK)
+    side_position = (BLACK_SIDE_X, BLACK_SIDE_Y)
+    screen.blit(side_surface, side_position)
+
+class GameState():
+    def __init__(self):
+        self.player_side = BLACK_SIDE   #默认为黑方
+        self.after_selecting_side = False
+        self.is_playing = True
+
+    def set_player_side(self, side):
+        self.player_side = side
+        self.after_selecting_side = True
+
+    def stop_game(self):
+        self.is_playing = False
 
 if __name__ == "__main__":
     main()
