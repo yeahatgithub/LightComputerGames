@@ -98,9 +98,14 @@ def draw_vs_img(screen, player_side):
     else:
         screen.blit(GameResource.load_you_o_vs_computer_x_img(), side_position)
 
-def draw_whose_turn(screen, player_side, round_cnt):
+def draw_whose_turn(screen, player_side, player):
+    #白方先下
+    # is_your_turn = (player_side == BLACK_SIDE and round_cnt % 2 == 1) or (player_side == WHITE_SIDE and round_cnt % 2 == 0)
     turn_position = (MARGIN_LEFT, MARGIN_TOP - 120)
-    screen.blit(GameResource.load_your_turn_img(), turn_position)
+    if player == "you":
+        screen.blit(GameResource.load_your_turn_img(), turn_position)
+    else:
+        screen.blit(GameResource.load_computer_turn_img(), turn_position)
 
 if __name__ == "__main__":
     main()
