@@ -46,7 +46,7 @@ def select_white_side(click_pos):
 def draw_window(screen, game_state):
     draw_title(screen)
 
-    if not game_state.after_selecting_side:
+    if GAME_STAGES[game_state.stage] == 'choose_side':
         draw_select_side(screen)
     else:
         draw_vs_img(screen, game_state.player_side)
