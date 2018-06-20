@@ -35,8 +35,17 @@ class GameState():
 
     def drop_piece(self, row, column):
         '''玩家在单元格(row, column)落子'''
-        self.next = "comuter"
+        self.next = "computer"
         self.set_board_cell(self.player_side, row, column)
 
     def set_board_cell(self, piece_type, row, column):
-        self.board[row][column] == piece_type
+        self.board[row][column] = piece_type
+
+    def print_board(self):
+        for r in range(3):
+            for c in range(3):
+                if self.board[r][c] == ' ':
+                    print('-', end='')
+                else:
+                    print(self.board[r][c])
+            print()
