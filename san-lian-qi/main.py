@@ -43,7 +43,7 @@ def check_events(game_state):
 
     return game_state
 
-#TODO:  存在问题。
+
 def valid_drop(click_pos, game_state):
     '''鼠标点击在可以落子的格子上吗？'''
     if click_pos[0] <= MARGIN_LEFT or click_pos[0] >= MARGIN_LEFT + BOARD_SIZE \
