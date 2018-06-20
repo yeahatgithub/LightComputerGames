@@ -4,17 +4,20 @@
 # @Copyright:  MIT
 from settings import *
 class GameState():
+    BLANK_CELL = ' '
     def __init__(self):
         self.player_side = None   #玩家下哪种子？
-        # self.after_selecting_side = False
-        self.stage = 0   #一共3个阶段。见GAME_STAGES的定义
+        self.stage = CHOOSE_SIDE   #一共3个阶段。见GAME_STAGES的定义
         self.is_playing = True
         self.round_cnt = 0
         self.next = ""   #下一步谁下子？next的取两种值："you"，"computer".
+        self.board = [[' ', ' ', ' '],   #表示棋盘。空格字符表示该格子为空。
+                      [' ', ' ', ' '],   #O字母表示该格子下了白棋，X字母表示下了黑棋。
+                      [' ', ' ', ' '] ]
 
     def set_player_side(self, side):
         self.player_side = side
-        self.stage = 1
+        self.stage = PLAYING
         if side == BLACK_SIDE:
             self.next = "computer"
         else:
@@ -29,3 +32,11 @@ class GameState():
             self.next == "computer"
         else:
             self.next = "you"
+
+    def drop_piece(self, row, column):
+        '''玩家在单元格(row, column)落子'''
+        self.next = "comuter"
+        self.set_board_cell(self.player_side, row, column)
+
+    def set_board_cell(self, piece_type, row, column):
+        self.board[row][column] == piece_type
