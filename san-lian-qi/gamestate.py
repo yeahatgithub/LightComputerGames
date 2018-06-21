@@ -21,29 +21,20 @@ class GameState():
         self.stage = PLAYING
         if side == DEFENSIVE_SIDE:
             self.computer_side = OFFENSIVE_SIDE
-            # self.next = "computer"
             self.computer_move()
-            # self.next = "you"
         else:
             self.computer_side = DEFENSIVE_SIDE
-            # self.next = "you"
 
     def stop_game(self):
         self.is_playing = False
 
     def increase_round(self):
         self.round_cnt += 1
-        # if self.next == "you":
-        #     self.next == "computer"
-        # else:
-        #     self.next = "you"
 
     def drop_piece(self, row, column):
         '''玩家在单元格(row, column)落子'''
         self.make_move(self.player_side, row, column)
-        # self.next = "computer"
         self.computer_move()
-        # self.next = "you"
 
     def make_move(self, piece_type, row, column):
         GameState.make_move_on_board(self.board, piece_type, row, column)
@@ -67,20 +58,34 @@ class GameState():
         if computer_win_cell:
             r, c = computer_win_cell
             self.make_move(self.computer_side, r, c)
-        else:
-            for r in range(3):
-                for c in range(3):
-                    if self.board[r][c] == GameState.BLANK_CELL:
-                        self.make_move(self.computer_side, r, c)
-                        return
+            return
+
+        #找到玩家会获胜的落子位置，抢先落子
+        player_win_cell = self.find_player_lucky_cell()
+        if player_win_cell:
+            r, c = player_win_cell
+            self.make_move(self.computer_side, r, c)
+            return
+
+        for r in range(3):
+            for c in range(3):
+                if self.board[r][c] == GameState.BLANK_CELL:
+                    self.make_move(self.computer_side, r, c)
+                    return
 
     def find_computer_lucky_cell(self):
+        return self.find_lucky_cell(self.computer_side)
+
+    def find_player_lucky_cell(self):
+        return self.find_lucky_cell(self.player_side)
+
+    def find_lucky_cell(self, side):
         for r in range(3):
             for c in range(3):
                 board_copy = GameState.copy_board(self.board)
                 if self.board[r][c] == GameState.BLANK_CELL:
-                    GameState.make_move_on_board(board_copy, self.computer_side, r, c)
-                    if self.computer_wins(board_copy):
+                    GameState.make_move_on_board(board_copy, side, r, c)
+                    if GameState.wins(board_copy, side):
                         return r, c
         return None
 
@@ -119,4 +124,6 @@ class GameState():
             return True
 
         return False
+
+
 
