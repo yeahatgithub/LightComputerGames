@@ -10,7 +10,7 @@ class GameState():
         self.computer_side = None  #计算机先手还是后手？
         self.stage = CHOOSE_SIDE   #一共3个阶段。见GAME_STAGES的定义
         self.is_playing = True
-        self.round_cnt = 0
+        self.move_cnt = 0
         # self.next = ""   #下一步谁下子？next的取两种值："you"，"computer".
         self.board = [[' ', ' ', ' '],   #表示棋盘。空格字符表示该格子为空。
                       [' ', ' ', ' '],   #O字母表示该格子下了白棋，X字母表示下了黑棋。
@@ -28,8 +28,8 @@ class GameState():
     def stop_game(self):
         self.is_playing = False
 
-    def increase_round(self):
-        self.round_cnt += 1
+    # def increase_round(self):
+    #     self.move_cnt += 1
 
     def drop_piece(self, row, column):
         '''玩家在单元格(row, column)落子'''
@@ -38,6 +38,7 @@ class GameState():
 
     def make_move(self, piece_type, row, column):
         GameState.make_move_on_board(self.board, piece_type, row, column)
+        self.move_cnt += 1
 
     @staticmethod
     def make_move_on_board(board, piece_type, row, column):
@@ -67,11 +68,24 @@ class GameState():
             self.make_move(self.computer_side, r, c)
             return
 
-        for r in range(3):
-            for c in range(3):
+        #尝试在4个角落子
+        for r in [0, 2]:
+            for c in [0, 2]:
                 if self.board[r][c] == GameState.BLANK_CELL:
                     self.make_move(self.computer_side, r, c)
                     return
+
+        #尝试在中心落子
+        if self.board[1][1] == GameState.BLANK_CELL:
+            self.make_move(self.computer_side, 1, 1)
+            return
+
+        #在四个边落子
+        for r, c in [(0, 1), (1, 0), (1, 2), (2, 1)]:
+            if self.board[r][c] == GameState.BLANK_CELL:
+                self.make_move(self.computer_side, r, c)
+                return
+
 
     def find_computer_lucky_cell(self):
         return self.find_lucky_cell(self.computer_side)
