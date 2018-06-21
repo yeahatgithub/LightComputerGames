@@ -11,7 +11,6 @@ class GameState():
         self.stage = CHOOSE_SIDE   #一共3个阶段。见GAME_STAGES的定义
         self.is_playing = True
         self.move_cnt = 0
-        # self.next = ""   #下一步谁下子？next的取两种值："you"，"computer".
         self.board = [[' ', ' ', ' '],   #表示棋盘。空格字符表示该格子为空。
                       [' ', ' ', ' '],   #O字母表示该格子下了白棋，X字母表示下了黑棋。
                       [' ', ' ', ' '] ]
@@ -31,10 +30,18 @@ class GameState():
     # def increase_round(self):
     #     self.move_cnt += 1
 
-    def drop_piece(self, row, column):
+    def player_make_move(self, row, column):
         '''玩家在单元格(row, column)落子'''
         self.make_move(self.player_side, row, column)
-        self.computer_move()
+        if self.player_wins():
+            print("you wins!")
+            self.stage = GAME_END
+        if self.stage != GAME_END and self.move_cnt < 9:
+            self.computer_move()
+        if self.stage != GAME_END and self.move_cnt == 9:
+            print("Duce.")
+            self.stage = GAME_END
+
 
     def make_move(self, piece_type, row, column):
         GameState.make_move_on_board(self.board, piece_type, row, column)
@@ -59,6 +66,8 @@ class GameState():
         if computer_win_cell:
             r, c = computer_win_cell
             self.make_move(self.computer_side, r, c)
+            print("Computer wins!")
+            self.stage = GAME_END
             return
 
         #找到玩家会获胜的落子位置，抢先落子
@@ -110,8 +119,11 @@ class GameState():
             copy.append(r[:])
         return copy
 
-    def computer_wins(self, board):
-        return GameState.wins(board, self.computer_side)
+    def computer_wins(self):
+        return GameState.wins(self.board, self.computer_side)
+
+    def player_wins(self):
+        return GameState.wins(self.board, self.player_side)
 
     @staticmethod
     def wins(board, side):

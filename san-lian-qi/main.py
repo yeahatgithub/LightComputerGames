@@ -37,7 +37,7 @@ def check_events(game_state):
                 if valid_drop(click_pos, game_state):
                     drop_cell = find_cell(click_pos)
                     # print("drop cell:", drop_cell)
-                    game_state.drop_piece(drop_cell[0], drop_cell[1])
+                    game_state.player_make_move(drop_cell[0], drop_cell[1])
                     # game_state.print_board()
 
     return game_state
