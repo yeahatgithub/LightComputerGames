@@ -20,6 +20,8 @@ class GameState():
         self.stage = PLAYING
         if side == DEFENSIVE_SIDE:
             self.next = "computer"
+            self.computer_move()
+            self.next = "you"
         else:
             self.next = "you"
 
@@ -35,8 +37,10 @@ class GameState():
 
     def drop_piece(self, row, column):
         '''玩家在单元格(row, column)落子'''
-        self.next = "computer"
         self.set_board_cell(self.player_side, row, column)
+        self.next = "computer"
+        self.computer_move()
+        self.next = "you"
 
     def set_board_cell(self, piece_type, row, column):
         self.board[row][column] = piece_type
@@ -49,3 +53,17 @@ class GameState():
                 else:
                     print(self.board[r][c])
             print()
+
+    def computer_move(self):
+        if self.player_side == DEFENSIVE_SIDE:
+            computer_side = OFFENSIVE_SIDE
+        elif self.player_side == OFFENSIVE_SIDE:
+            computer_side = DEFENSIVE_SIDE
+        else:
+            return
+
+        for r in range(3):
+            for c in range(3):
+                if self.board[r][c] == GameState.BLANK_CELL:
+                    self.set_board_cell(computer_side, r, c)
+                    return

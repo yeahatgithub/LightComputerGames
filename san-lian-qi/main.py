@@ -28,9 +28,9 @@ def check_events(game_state):
         if event.type == pygame.MOUSEBUTTONDOWN:
             click_pos = pygame.mouse.get_pos()
             if game_state.stage == CHOOSE_SIDE:
-                if select_black_side(click_pos):
+                if select_defensive_side(click_pos):
                     game_state.set_player_side(DEFENSIVE_SIDE)
-                if select_white_side(click_pos):
+                if select_offensive_side(click_pos):
                     game_state.set_player_side(OFFENSIVE_SIDE)
             elif game_state.stage == PLAYING:
                 # print("playing...mouse down.")
@@ -38,7 +38,7 @@ def check_events(game_state):
                     drop_cell = find_cell(click_pos)
                     # print("drop cell:", drop_cell)
                     game_state.drop_piece(drop_cell[0], drop_cell[1])
-                    game_state.print_board()
+                    # game_state.print_board()
 
     return game_state
 
@@ -77,11 +77,11 @@ def find_cell(click_pos):
     return (row, column)
 
 
-def select_black_side(click_pos):
+def select_defensive_side(click_pos):
     return DEFENSIVE_SIDE_X <= click_pos[0] <= DEFENSIVE_SIDE_X + BUTTON_WIDTH \
            and DEFENSIVE_SIDE_Y <= click_pos[1] <= DEFENSIVE_SIDE_Y + BUTTON_HEIGHT
 
-def select_white_side(click_pos):
+def select_offensive_side(click_pos):
     return OFFENSIVE_SIDE_X <= click_pos[0] <= OFFENSIVE_SIDE_X + BUTTON_WIDTH \
            and OFFENSIVE_SIDE_Y <= click_pos[1] <= OFFENSIVE_SIDE_Y + BUTTON_HEIGHT
 
@@ -92,7 +92,7 @@ def draw_window(screen, game_state):
         draw_select_side(screen)
     else:
         draw_vs_img(screen, game_state.player_side)
-        draw_whose_turn(screen, game_state.player_side, game_state.round_cnt)
+        # draw_whose_turn(screen, game_state.player_side, game_state.round_cnt)
 
         draw_board(screen, game_state)
 
@@ -158,11 +158,11 @@ def draw_vs_img(screen, player_side):
     else:
         screen.blit(GameResource.load_you_o_vs_computer_x_img(), side_position)
 
-def draw_whose_turn(screen, player_side, player):
+def draw_whose_turn(screen, player_side, round_cnt):
     #白方先下
-    # is_your_turn = (player_side == BLACK_SIDE and round_cnt % 2 == 1) or (player_side == WHITE_SIDE and round_cnt % 2 == 0)
+    is_your_turn = (player_side == DEFENSIVE_SIDE and round_cnt % 2 == 1) or (player_side == OFFENSIVE_SIDE and round_cnt % 2 == 0)
     turn_position = (MARGIN_LEFT, MARGIN_TOP - 120)
-    if player == "you":
+    if is_your_turn:
         screen.blit(GameResource.load_your_turn_img(), turn_position)
     else:
         screen.blit(GameResource.load_computer_turn_img(), turn_position)
