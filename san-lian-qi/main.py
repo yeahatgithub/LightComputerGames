@@ -26,18 +26,17 @@ def check_events(game_state):
             game_state.stop_game()
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            print("mouse down")
             click_pos = pygame.mouse.get_pos()
             if game_state.stage == CHOOSE_SIDE:
                 if select_black_side(click_pos):
-                    game_state.set_player_side(BLACK_SIDE)
+                    game_state.set_player_side(DEFENSIVE_SIDE)
                 if select_white_side(click_pos):
-                    game_state.set_player_side(WHITE_SIDE)
+                    game_state.set_player_side(OFFENSIVE_SIDE)
             elif game_state.stage == PLAYING:
-                print("playing...mouse down.")
+                # print("playing...mouse down.")
                 if valid_drop(click_pos, game_state):
                     drop_cell = find_cell(click_pos)
-                    print("drop cell:", drop_cell)
+                    # print("drop cell:", drop_cell)
                     game_state.drop_piece(drop_cell[0], drop_cell[1])
                     game_state.print_board()
 
@@ -79,12 +78,12 @@ def find_cell(click_pos):
 
 
 def select_black_side(click_pos):
-    return BLACK_SIDE_X <= click_pos[0] <= BLACK_SIDE_X + BUTTON_WIDTH \
-           and BLACK_SIDE_Y <= click_pos[1] <= BLACK_SIDE_Y + BUTTON_HEIGHT
+    return DEFENSIVE_SIDE_X <= click_pos[0] <= DEFENSIVE_SIDE_X + BUTTON_WIDTH \
+           and DEFENSIVE_SIDE_Y <= click_pos[1] <= DEFENSIVE_SIDE_Y + BUTTON_HEIGHT
 
 def select_white_side(click_pos):
-    return WHITE_SIDE_X <= click_pos[0] <= WHITE_SIDE_X + BUTTON_WIDTH \
-           and WHITE_SIDE_Y <= click_pos[1] <= WHITE_SIDE_Y + BUTTON_HEIGHT
+    return OFFENSIVE_SIDE_X <= click_pos[0] <= OFFENSIVE_SIDE_X + BUTTON_WIDTH \
+           and OFFENSIVE_SIDE_Y <= click_pos[1] <= OFFENSIVE_SIDE_Y + BUTTON_HEIGHT
 
 def draw_window(screen, game_state):
     draw_title(screen)
@@ -127,7 +126,7 @@ def draw_piece(screen, cell, piece_type):
     r, c = cell
     left = MARGIN_LEFT + 25 + c * cell_width
     top = MARGIN_TOP + 25 + r * cell_width
-    if piece_type == BLACK_SIDE:
+    if piece_type == DEFENSIVE_SIDE:
         screen.blit(GameResource.load_x_piece_img(), (left, top))
     else:
         screen.blit(GameResource.load_o_piece_img(), (left, top))
@@ -136,11 +135,11 @@ def draw_piece(screen, cell, piece_type):
 def draw_select_side(screen):
     select_tip_font = pygame.font.SysFont('simhei', 24)
     select_tip_surface = select_tip_font.render('点击鼠标选择：', False, BLACK)
-    select_tip_position = (MARGIN_LEFT - 200,  BLACK_SIDE_Y + 15)
+    select_tip_position = (MARGIN_LEFT - 200, DEFENSIVE_SIDE_Y + 15)
     screen.blit(select_tip_surface, select_tip_position)
 
-    draw_select_button(screen, BLACK_SIDE_X, BLACK_SIDE_Y, '选黑棋(X)')
-    draw_select_button(screen, WHITE_SIDE_X, WHITE_SIDE_Y, '选白棋(O)')
+    draw_select_button(screen, DEFENSIVE_SIDE_X, DEFENSIVE_SIDE_Y, '选后手(X)')
+    draw_select_button(screen, OFFENSIVE_SIDE_X, OFFENSIVE_SIDE_Y, '选先手(O)')
 
 def draw_select_button(screen, x, y, btn_label):
     side_rect = (x, y, 130, 50)
@@ -152,9 +151,9 @@ def draw_select_button(screen, x, y, btn_label):
     screen.blit(side_surface, side_position)
 
 def draw_vs_img(screen, player_side):
-    computer_side = WHITE_SIDE if player_side == BLACK_SIDE else BLACK_SIDE
-    side_position = (BLACK_SIDE_X - 120, BLACK_SIDE_Y - 40)
-    if player_side == BLACK_SIDE:
+    computer_side = OFFENSIVE_SIDE if player_side == DEFENSIVE_SIDE else DEFENSIVE_SIDE
+    side_position = (DEFENSIVE_SIDE_X - 120, DEFENSIVE_SIDE_Y - 40)
+    if player_side == DEFENSIVE_SIDE:
         screen.blit(GameResource.load_you_x_vs_computer_o_img(), side_position)
     else:
         screen.blit(GameResource.load_you_o_vs_computer_x_img(), side_position)

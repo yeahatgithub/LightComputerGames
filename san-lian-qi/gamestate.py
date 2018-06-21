@@ -18,7 +18,7 @@ class GameState():
     def set_player_side(self, side):
         self.player_side = side
         self.stage = PLAYING
-        if side == BLACK_SIDE:
+        if side == DEFENSIVE_SIDE:
             self.next = "computer"
         else:
             self.next = "you"
