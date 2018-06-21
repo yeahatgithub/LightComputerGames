@@ -141,6 +141,9 @@ def draw_select_side(screen):
     draw_select_button(screen, DEFENSIVE_SIDE_X, DEFENSIVE_SIDE_Y, '选后手(X)')
     draw_select_button(screen, OFFENSIVE_SIDE_X, OFFENSIVE_SIDE_Y, '选先手(O)')
 
+    demo_position = (MARGIN_LEFT - 100, DEFENSIVE_SIDE_Y + 100)
+    screen.blit(GameResource.load_howto_sanlianqi_img(), demo_position)
+
 def draw_select_button(screen, x, y, btn_label):
     side_rect = (x, y, 130, 50)
     pygame.draw.rect(screen, SELECT_AREA_BGCOLOR, side_rect)
