@@ -33,12 +33,14 @@ def check_events(game_state):
                 if select_offensive_side(click_pos):
                     game_state.set_player_side(OFFENSIVE_SIDE)
             elif game_state.stage == PLAYING:
-                # print("playing...mouse down.")
                 if valid_drop(click_pos, game_state):
                     drop_cell = find_cell(click_pos)
-                    # print("drop cell:", drop_cell)
                     game_state.player_make_move(drop_cell[0], drop_cell[1])
                     # game_state.print_board()
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_r and game_state.stage == GAME_END:
+                game_state = GameState()
 
     return game_state
 
@@ -95,6 +97,7 @@ def draw_window(screen, game_state):
         draw_board(screen, game_state)
         if game_state.stage == GAME_END:
             draw_winner_img(screen, game_state.winner)
+            draw_newgame_img(screen)
 
 def draw_title(screen):
     title_postion = (MARGIN_LEFT, MARGIN_TOP - 300)
@@ -170,6 +173,10 @@ def draw_winner_img(screen, winner):
         screen.blit(GameResource.load_duce_img(), img_postion)
     else:
         screen.blit(GameResource.load_computer_won_img(), img_postion)
+
+def draw_newgame_img(screen):
+    img_position = (MARGIN_LEFT - 50, MARGIN_TOP + BOARD_SIZE + 50)
+    screen.blit(GameResource.load_newgame_tip_img(), img_position)
 
 if __name__ == "__main__":
     main()

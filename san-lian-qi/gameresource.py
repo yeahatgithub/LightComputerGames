@@ -17,6 +17,7 @@ class GameResource():
     computer_won_img = None
     duce_img = None
     howto_sanlianqi_img = None
+    newgame_tip_img = None
 
     def __init__(self):
         pass
@@ -78,3 +79,9 @@ class GameResource():
             GameResource.howto_sanlianqi_img = pygame.image.load(GameResource.img_path + "how-to-play-sanlianqi.jpg")
             GameResource.howto_sanlianqi_img = pygame.transform.scale(GameResource.howto_sanlianqi_img, (400, 400))
         return GameResource.howto_sanlianqi_img
+
+    @staticmethod
+    def load_newgame_tip_img():
+        if not GameResource.newgame_tip_img:
+            GameResource.newgame_tip_img = pygame.image.load(GameResource.img_path + "press_r_new_game.png").convert_alpha()
+        return GameResource.newgame_tip_img
