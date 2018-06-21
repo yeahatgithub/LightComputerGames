@@ -13,6 +13,9 @@ class GameResource():
     you_x_vs_computer_o_img = None
     o_piece_img = None
     x_piece_img = None
+    you_won_img = None
+    computer_won_img = None
+    duce_img = None
 
     def __init__(self):
         pass
@@ -36,17 +39,6 @@ class GameResource():
             GameResource.you_x_vs_computer_o_img = pygame.image.load(GameResource.img_path + "you_x_vs_computer_o.png").convert_alpha()
         return GameResource.you_x_vs_computer_o_img
 
-    @staticmethod
-    def load_your_turn_img():
-        if not GameResource.your_turn_img:
-            GameResource.your_turn_img = pygame.image.load(GameResource.img_path + "your_turn.png").convert_alpha()
-        return GameResource.your_turn_img
-
-    @staticmethod
-    def load_computer_turn_img():
-        if not GameResource.computer_trun_img:
-            GameResource.computer_trun_img = pygame.image.load(GameResource.img_path + "computer_turn.png").convert_alpha()
-        return GameResource.computer_trun_img
 
     @staticmethod
     def load_o_piece_img():
@@ -59,3 +51,22 @@ class GameResource():
         if not GameResource.x_piece_img:
             GameResource.x_piece_img = pygame.image.load(GameResource.img_path + "x.png")
         return GameResource.x_piece_img
+
+
+    @staticmethod
+    def load_you_won_img():
+        if not GameResource.you_won_img:
+            GameResource.you_won_img = pygame.image.load(GameResource.img_path + "you_won.png").convert_alpha()
+        return GameResource.you_won_img
+
+    @staticmethod
+    def load_computer_won_img():
+        if not GameResource.computer_won_img:
+            GameResource.computer_won_img = pygame.image.load(GameResource.img_path + "computer_won.png").convert_alpha()
+        return GameResource.computer_won_img
+
+    @staticmethod
+    def load_duce_img():
+        if not GameResource.duce_img:
+            GameResource.duce_img = pygame.image.load(GameResource.img_path + "duce.png").convert_alpha()
+        return GameResource.duce_img

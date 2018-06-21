@@ -14,6 +14,7 @@ class GameState():
         self.board = [[' ', ' ', ' '],   #表示棋盘。空格字符表示该格子为空。
                       [' ', ' ', ' '],   #O字母表示该格子下了白棋，X字母表示下了黑棋。
                       [' ', ' ', ' '] ]
+        self.winner = None  #取"player", "computer", "duce"三个值。duce意味着平局。
 
     def set_player_side(self, side):
         self.player_side = side
@@ -34,12 +35,12 @@ class GameState():
         '''玩家在单元格(row, column)落子'''
         self.make_move(self.player_side, row, column)
         if self.player_wins():
-            print("you wins!")
+            self.winner = "player"
             self.stage = GAME_END
         if self.stage != GAME_END and self.move_cnt < 9:
             self.computer_move()
         if self.stage != GAME_END and self.move_cnt == 9:
-            print("Duce.")
+            self.winner = "duce"
             self.stage = GAME_END
 
 
@@ -66,7 +67,8 @@ class GameState():
         if computer_win_cell:
             r, c = computer_win_cell
             self.make_move(self.computer_side, r, c)
-            print("Computer wins!")
+            # print("Computer wins!")
+            self.winner = "computer"
             self.stage = GAME_END
             return
 

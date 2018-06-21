@@ -92,9 +92,9 @@ def draw_window(screen, game_state):
         draw_select_side(screen)
     else:
         draw_vs_img(screen, game_state.player_side)
-        # draw_whose_turn(screen, game_state.player_side, game_state.round_cnt)
-
         draw_board(screen, game_state)
+        if game_state.stage == GAME_END:
+            draw_winner_img(screen, game_state.winner)
 
 def draw_title(screen):
     title_postion = (MARGIN_LEFT, MARGIN_TOP - 300)
@@ -158,14 +158,15 @@ def draw_vs_img(screen, player_side):
     else:
         screen.blit(GameResource.load_you_o_vs_computer_x_img(), side_position)
 
-def draw_whose_turn(screen, player_side, round_cnt):
-    #白方先下
-    is_your_turn = (player_side == DEFENSIVE_SIDE and round_cnt % 2 == 1) or (player_side == OFFENSIVE_SIDE and round_cnt % 2 == 0)
-    turn_position = (MARGIN_LEFT, MARGIN_TOP - 120)
-    if is_your_turn:
-        screen.blit(GameResource.load_your_turn_img(), turn_position)
+
+def draw_winner_img(screen, winner):
+    img_postion = (MARGIN_LEFT + 50, MARGIN_TOP + 50)
+    if winner == "player":
+        screen.blit(GameResource.load_you_won_img(), img_postion)
+    elif winner == "duce":
+        screen.blit(GameResource.load_duce_img(), img_postion)
     else:
-        screen.blit(GameResource.load_computer_turn_img(), turn_position)
+        screen.blit(GameResource.load_computer_won_img(), img_postion)
 
 if __name__ == "__main__":
     main()
