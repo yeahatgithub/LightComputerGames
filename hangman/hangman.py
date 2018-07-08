@@ -80,7 +80,7 @@ while num_guess_failure < len(HANGMAN_LIST) - 1:
     print(HANGMAN_LIST[num_guess_failure])
     print("当前空缺：")
     print(' '.join(hitted_letters))
-    num_guess_failure = len(missed_letters)
+    # num_guess_failure = len(missed_letters)
     if num_guess_failure > 0:
         print("没猜中的字母：" + missed_letters)
 
@@ -96,6 +96,7 @@ while num_guess_failure < len(HANGMAN_LIST) - 1:
             break
     else:
         missed_letters += g
+        num_guess_failure += 1
 
 if num_guess_failure == len(HANGMAN_LIST) - 1:
     print("真不幸，你丢命了！")
