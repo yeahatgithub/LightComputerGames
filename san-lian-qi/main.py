@@ -50,7 +50,7 @@ def draw_window(screen, game_state):
         draw_select_side(screen)
     else:
         draw_vs_img(screen, game_state.player_side)
-        draw_whose_turn(screen, game_state.player_side, game_state.round_cnt)
+        draw_whose_turn(screen, game_state.next)
 
     draw_board(screen)
 
@@ -98,11 +98,11 @@ def draw_vs_img(screen, player_side):
     else:
         screen.blit(GameResource.load_you_o_vs_computer_x_img(), side_position)
 
-def draw_whose_turn(screen, player_side, player):
+def draw_whose_turn(screen, next):
     #白方先下
     # is_your_turn = (player_side == BLACK_SIDE and round_cnt % 2 == 1) or (player_side == WHITE_SIDE and round_cnt % 2 == 0)
     turn_position = (MARGIN_LEFT, MARGIN_TOP - 120)
-    if player == "you":
+    if next == "you":
         screen.blit(GameResource.load_your_turn_img(), turn_position)
     else:
         screen.blit(GameResource.load_computer_turn_img(), turn_position)
