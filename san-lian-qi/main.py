@@ -27,21 +27,22 @@ def check_events(game_state):
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             click_pos = pygame.mouse.get_pos()
-            if select_black_side(click_pos):
-                game_state.set_player_side(BLACK_SIDE)
+            if game_state.stage == CHOOSE_SIDE:
+                if select_black_side(click_pos):
+                    game_state.set_player_side(BLACK_SIDE)
 
-            if select_white_side(click_pos):
-                game_state.set_player_side(WHITE_SIDE)
+                if select_white_side(click_pos):
+                    game_state.set_player_side(WHITE_SIDE)
 
     return game_state
 
 def select_black_side(click_pos):
-    return BLACK_SIDE_X <= click_pos[0] <= BLACK_SIDE_X + SELECT_AREA_WIDTH \
-            and BLACK_SIDE_Y <= click_pos[1] <= BLACK_SIDE_Y + SELECT_AREA_HEIGHT
+    return BLACK_SIDE_X <= click_pos[0] <= BLACK_SIDE_X + BUTTON_WIDTH \
+           and BLACK_SIDE_Y <= click_pos[1] <= BLACK_SIDE_Y + BUTTON_HEIGHT
 
 def select_white_side(click_pos):
-    return WHITE_SIDE_X <= click_pos[0] <= WHITE_SIDE_X + SELECT_AREA_WIDTH \
-            and WHITE_SIDE_Y <= click_pos[1] <= WHITE_SIDE_Y + SELECT_AREA_HEIGHT
+    return WHITE_SIDE_X <= click_pos[0] <= WHITE_SIDE_X + BUTTON_WIDTH \
+           and WHITE_SIDE_Y <= click_pos[1] <= WHITE_SIDE_Y + BUTTON_HEIGHT
 
 def draw_window(screen, game_state):
     draw_title(screen)
