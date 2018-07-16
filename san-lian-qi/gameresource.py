@@ -11,6 +11,8 @@ class GameResource():
     computer_trun_img = None
     you_o_vs_computer_x_img = None
     you_x_vs_computer_o_img = None
+    o_piece_img = None
+    x_piece_img = None
 
     def __init__(self):
         pass
@@ -45,3 +47,15 @@ class GameResource():
         if not GameResource.computer_trun_img:
             GameResource.computer_trun_img = pygame.image.load(GameResource.img_path + "computer_turn.png").convert_alpha()
         return GameResource.computer_trun_img
+
+    @staticmethod
+    def load_o_piece_img():
+        if not GameResource.o_piece_img:
+            GameResource.o_piece_img = pygame.image.load(GameResource.img_path + "o.png")
+        return GameResource.o_piece_img
+
+    @staticmethod
+    def load_x_piece_img():
+        if not GameResource.x_piece_img:
+            GameResource.x_piece_img = pygame.image.load(GameResource.img_path + "x.png")
+        return GameResource.x_piece_img
