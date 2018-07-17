@@ -10,7 +10,6 @@ class GameState():
         self.stage = CHOOSE_SIDE   #一共3个阶段。见GAME_STAGES的定义
         self.is_playing = True
         self.round_cnt = 0
-        self.next = ""   #下一步谁下子？next的取两种值："you"，"computer".
         self.board = [[' ', ' ', ' '],   #表示棋盘。空格字符表示该格子为空。
                       [' ', ' ', ' '],   #O字母表示该格子下了白棋，X字母表示下了黑棋。
                       [' ', ' ', ' '] ]
@@ -18,25 +17,19 @@ class GameState():
     def set_player_side(self, side):
         self.player_side = side
         self.stage = PLAYING
-        if side == BLACK_SIDE:
-            self.next = "computer"
-        else:
-            self.next = "you"
+        if side == DEFENSIVE_SIDE:
+            self.computer_move()
 
     def stop_game(self):
         self.is_playing = False
 
     def increase_round(self):
         self.round_cnt += 1
-        if self.next == "you":
-            self.next == "computer"
-        else:
-            self.next = "you"
 
     def drop_piece(self, row, column):
         '''玩家在单元格(row, column)落子'''
-        self.next = "computer"
         self.set_board_cell(self.player_side, row, column)
+        self.computer_move()
 
     def set_board_cell(self, piece_type, row, column):
         self.board[row][column] = piece_type
@@ -47,5 +40,19 @@ class GameState():
                 if self.board[r][c] == ' ':
                     print('-', end='')
                 else:
-                    print(self.board[r][c], end='')
+                    print(self.board[r][c])
             print()
+
+    def computer_move(self):
+        if self.player_side == DEFENSIVE_SIDE:
+            computer_side = OFFENSIVE_SIDE
+        elif self.player_side == OFFENSIVE_SIDE:
+            computer_side = DEFENSIVE_SIDE
+        else:
+            return
+
+        for r in range(3):
+            for c in range(3):
+                if self.board[r][c] == GameState.BLANK_CELL:
+                    self.set_board_cell(computer_side, r, c)
+                    return
